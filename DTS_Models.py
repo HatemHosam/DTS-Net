@@ -10,7 +10,7 @@ def DTS_Net( dataset = 'NYUV2'):
         cls_cnt = 20
     elif dataset == 'CITYSCAPES':
         shape= (512,1024,3)
-        cls_cnt = 33
+        cls_cnt = 19
     elif dataset == 'NYUV2':
         shape= (480,640,3)
         cls_cnt = 13

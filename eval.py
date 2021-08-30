@@ -35,7 +35,7 @@ elif dataset == 'CITYSCAPES':
         shape= (704,352)
     else:
         shape= (1024,512)
-    cls_cnt = 34
+    cls_cnt = 20
 elif dataset == 'NYUV2':
     images_path = 'NYUv2 semantic segmentation/images/'
     seg_maps_path = 'NYUv2 semantic segmentation/images_seg/'
@@ -99,11 +99,7 @@ for data in val_data:
     
     now = time.time()
     print(now-old)
-    sparse_seg_map = np.zeros((shape[1],shape[0],cls_cnt))
-    sparse_seg = np.zeros((shape[1],shape[0],cls_cnt))
-    for i in range(cls_cnt):
-        #index = np.where(seg_map == i)
-        sparse_seg_map[seg_map == i, i] = 1
+    
     if dataset == 'NYUV2':
         seg = cv2.imread(seg_maps_path+data.split('\n')[0], cv2.IMREAD_GRAYSCALE)
         if joint:
@@ -129,9 +125,7 @@ for data in val_data:
             pred[ind] = 1
             errors.append(compute_errors(gt, pred))
     seg = cv2.resize(seg, dsize=shape, interpolation=cv2.INTER_NEAREST)
-    for i in range(cls_cnt):
-        sparse_seg[seg == i, i] = 1
-    m.update_state(sparse_seg, sparse_seg_map) 
+    m.update_state(seg, seg_map) 
     miou_val = m.result().numpy()
     val_list.append(miou_val)
 

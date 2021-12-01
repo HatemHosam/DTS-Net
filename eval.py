@@ -115,7 +115,7 @@ for data in val_data:
         seg = cv2.imread(seg_maps_path+img_name.replace('leftImg8bit.png','gtFine_labelIds.png'), cv2.IMREAD_GRAYSCALE)
         if joint:
             depth = cv2.imread(depth_path+img_name.replace('leftImg8bit.png','disparity.png'), cv2.IMREAD_UNCHANGED).astype(np.float32)
-            depth = cv2.resize(depth, dsize=shape, interpolation=cv2.INTER_NEAREST)
+            depth = cv2.resize(depth, dsize=shape, interpolation=cv2.INTER_LINEAR)
             depth[depth > 0] = (depth[depth > 0] - 1) / 256
             pred = depth_map
             gt = depth

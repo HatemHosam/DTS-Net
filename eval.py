@@ -117,13 +117,10 @@ for data in val_data:
             depth = cv2.imread(depth_path+img_name.replace('leftImg8bit.png','disparity.png'), cv2.IMREAD_UNCHANGED).astype(np.float32)
             depth = cv2.resize(depth, dsize=shape, interpolation=cv2.INTER_NEAREST)
             depth[depth > 0] = (depth[depth > 0] - 1) / 256
-    
             pred = depth_map
             gt = depth
-            ind = np.where(depth == 0)
-            gt[gt == 0] = 1
-            pred[ind] = 1
-            errors.append(compute_errors(gt, pred))
+            mask = np.logical_and(pred, gt)
+            errors.append(compute_errors(gt[mask], pred[mask]))
     seg = cv2.resize(seg, dsize=shape, interpolation=cv2.INTER_NEAREST)
     m.update_state(seg, seg_map) 
     miou_val = m.result().numpy()

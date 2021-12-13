@@ -35,7 +35,7 @@ elif dataset == 'CITYSCAPES':
         shape= (704,352)
     else:
         shape= (1024,512)
-    cls_cnt = 20
+    cls_cnt = 19
 elif dataset == 'NYUV2':
     images_path = 'NYUv2 semantic segmentation/images/'
     seg_maps_path = 'NYUv2 semantic segmentation/images_seg/'
@@ -45,7 +45,7 @@ elif dataset == 'NYUV2':
         shape= (320,256)
     else:
         shape= (640,480)
-    cls_cnt = 14
+    cls_cnt = 13
 
 #load model choose between DTS_Net and DTS_Net_Lite and load weights
 if lite:
@@ -104,11 +104,10 @@ for data in val_data:
         seg = cv2.imread(seg_maps_path+data.split('\n')[0], cv2.IMREAD_GRAYSCALE)
         if joint:
             depth = np.load(depth_path+str(int(data.split('_')[-1].split('.png')[0]))+'.npy')*10.0
-            ind = np.where(depth == 0)
-            depth2 = depth
-            depth2[depth2 == 0] = 1
-            depth_map[ind] = 1
-            errors.append(compute_errors(depth, depth_map))
+            pred = depth_map
+            gt = depth
+            mask = np.logical_and(pred, gt)
+            errors.append(compute_errors(gt[mask], pred[mask]))
     if dataset == 'VOC':
         seg = cv2.imread(seg_maps_path+data.split('\n')[0]+'.png', cv2.IMREAD_GRAYSCALE)
     if dataset == 'CITYSCAPES':
@@ -157,7 +156,10 @@ for data in val_data:
             mask = np.logical_and(pred, gt)
             errors.append(compute_errors(gt[mask], pred[mask]))
     seg = cv2.resize(seg, dsize=shape, interpolation=cv2.INTER_NEAREST)
-    m.update_state(seg, seg_map) 
+    if dataset == 'VOC':
+        m.update_state(seg, seg_map)
+    else:
+        m.update_state(seg[seg!=0], seg_map[seg_map!=0])
     miou_val = m.result().numpy()
     val_list.append(miou_val)
 

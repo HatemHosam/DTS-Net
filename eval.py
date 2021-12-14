@@ -154,7 +154,7 @@ for data in val_data:
             pred = depth_map
             gt = depth
             mask = np.logical_and(pred, gt)
-            errors.append(compute_errors(gt[mask], pred[mask]))
+            errors.append(compute_errors(gt[mask]-1, pred[mask]-1))
     seg = cv2.resize(seg, dsize=shape, interpolation=cv2.INTER_NEAREST)
     if dataset == 'VOC':
         m.update_state(seg, seg_map)

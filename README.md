@@ -7,3 +7,7 @@ opencv '4.5.1' <br />
 Numpy '1.19.5' <br />
 
 NYU depth V2 groudtruth depth maps and semantic segmentation maps are saved in custom formats for easier use with the provided code, they are available at this link: https://drive.google.com/drive/u/2/folders/1tviXcOM7ToxNjL1CbztsxVqs70l6adqY <br />
+
+
+if you use this paper, please cite this paper:
+H. Ibrahem, A. Salem, and H.-S. Kang, “DTS-Net: Depth-to-Space Networks for Fast and Accurate Semantic Object Segmentation,” Sensors, vol. 22, no. 1, p. 337, Jan. 2022, doi: 10.3390/s22010337.

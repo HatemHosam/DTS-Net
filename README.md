@@ -10,4 +10,5 @@ NYU depth V2 groudtruth depth maps and semantic segmentation maps are saved in c
 
 
 if you use this paper, please cite this paper:
+
 H. Ibrahem, A. Salem, and H.-S. Kang, “DTS-Net: Depth-to-Space Networks for Fast and Accurate Semantic Object Segmentation,” Sensors, vol. 22, no. 1, p. 337, Jan. 2022, doi: 10.3390/s22010337.
